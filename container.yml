@@ -1,0 +1,31 @@
+- hosts: localhost
+  vars:
+          - imagename: ssh_os:v1
+  tasks:
+          #Create the docker image with docker file
+          - name: Build the docker image
+            docker_image:
+              name: "{{ imagename }}"
+              build:
+                pull: yes
+                path: /dw
+              state: present
+              source: build
+
+          #Launch the docker container
+          - name: launch the container
+            docker_container:
+              name: taskos
+              image: "{{ imagename }}"
+              interactive: yes
+              ports: "8080:80"
+            register: docker_info
+
+          #Update the Inventory file dynamically
+          - name: fetch the container IP and update the Inventory
+            lineinfile:
+              path: /etc/ip.txt
+              insertafter: '^\[containers]'
+              firstmatch: yes
+              line: "{{ docker_info.ansible_facts.docker_container.NetworkSettings.IPAddress }}  ansible_user=root ansible_ssh_pass=redhat ansible_ssh_connection=ssh"
+              state: present
