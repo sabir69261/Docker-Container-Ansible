@@ -1,0 +1,29 @@
+- hosts: localhost
+  tasks:
+
+          #creating the docker repo
+          - name: Create a docker repo
+            yum_repository:
+                    name: mydoc
+                    description: for configure docker repo
+                    baseurl: https://download.docker.com/linux/centos/7/x86_64/stable/
+                    gpgcheck: no
+          #Installing the docker sdk
+          - name: Install Prerequisite
+            command: pip3 install docker-py
+
+          #Install the docker
+          - name: Configure docker
+            command: dnf install docker-ce --nobest -y
+
+          #It will start the docker service.
+          - name: Start the docker service
+            service:
+                    name: docker
+                    state: started
+
+          #it will enable the docker service
+          - name: Enable the docker service
+            service:
+                    name: docker
+                    enabled: yes
