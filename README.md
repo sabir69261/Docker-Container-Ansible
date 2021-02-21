@@ -1,3 +1,1 @@
-## 1. Configuring the docker using Ansible
-## 2. Creating the docker images ,  launch the docker container & update the inventory dynamically using Ansible
-## 3. Configuring the webserver inside Container using Ansible 
+Here we will write Ansible playbook  which will configure docker , create docker images , launch the container with this images , update the inventory dynamically & configure webserver inside the container.
