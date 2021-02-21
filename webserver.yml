@@ -1,0 +1,16 @@
+- hosts: containers
+  tasks:
+          - name: Configure webserver inside container
+            package:
+                    name: httpd
+                    state: present
+
+          - name: Copy the webpages
+            copy:
+                 dest: /var/www/html/task.html
+                 content: "Success comes from consistency"
+
+
+          - name: Start the webserver services
+            command: /usr/sbin/httpd
+
